@@ -1,0 +1,79 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/containers/protos/PlasticCrate.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/containers/protos/WoodenBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/conveyors/protos/ConveyorBelt.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/solids/protos/SolidBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/niryo/ned/protos/Ned.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.21343120523194983 0.4212514968223411 0.8814727999536766 1.0791119856816058
+  position -0.247310185887349 -1.5968758636239855 1.4183184966499855
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 3 3
+  floorTileSize 3 3
+  floorAppearance Parquetry {
+    type "light strip"
+  }
+}
+DEF BOX SolidBox {
+  translation 0.6308272900476724 0.0029764997780988354 0.32340115219727444
+  rotation 1.4659506888976545e-06 4.518419085233512e-05 0.99999999897812 0.0696144026530774
+  size 0.045 0.02 0.047
+  appearance PBRAppearance {
+    baseColor 1 0 0
+    baseColorMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/default/worlds/textures/tagged_wall.jpg"
+      ]
+    }
+    roughness 0.5
+    metalness 0
+  }
+  physics Physics {
+    density 2700
+    damping Damping {
+      linear 0
+      angular 0
+    }
+  }
+}
+ConveyorBelt {
+  hidden translation_1 7.791200182707821e-11 8.960682141904532e-11 0.2249654210576356
+  hidden rotation_1 -0.0018841284888067747 0.9999982245011254 3.24720567923441e-05 2.0113046359068683e-06
+  size 1.5 0.1 0.3
+  borderHeight 0
+  speed 0
+}
+WoodenBox {
+  translation 1.05 0 0.05
+  name "crate console"
+  size 0.4 0.3 0.1
+}
+WoodenBox {
+  translation 0.6 0.3 0.15
+  name "robot console"
+  size 0.3 0.3 0.3
+}
+PlasticCrate {
+  translation 1.05 0 0.1
+  size 0.4 0.3 0.2
+  color 0 0 1
+}
+DEF NIRYO_NED Ned {
+  translation 0.6 0.3 0.3
+  rotation 0 0 1 3.14159
+  controller "niryoNED_controller"
+  supervisor TRUE
+}
