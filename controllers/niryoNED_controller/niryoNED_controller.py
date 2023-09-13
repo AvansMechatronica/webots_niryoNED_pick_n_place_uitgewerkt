@@ -194,9 +194,10 @@ while niryoNED.step(timeStep) != -1:
     current_time = niryoNED.getTime()
     
     if state == 'IDLE':
-        state = 'START_GOTO_HOME'
-        state_start_time = niryoNED.getTime()
-        
+        if (current_time - state_start_time) > 4:
+            state = 'START_GOTO_HOME'
+            state_start_time = niryoNED.getTime()
+            
     elif state == 'START_GOTO_HOME':
         niryo.setJoints(niryo.homePos)
         # Open Gripper

@@ -6,15 +6,15 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Parquetry.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/containers/protos/PlasticCrate.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/containers/protos/WoodenBox.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/conveyors/protos/ConveyorBelt.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/solids/protos/SolidBox.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/niryo/ned/protos/Ned.proto"
+EXTERNPROTO "../protos/MySharpGP2Y0A41SK0F.proto"
 
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.21343120523194983 0.4212514968223411 0.8814727999536766 1.0791119856816058
-  position -0.247310185887349 -1.5968758636239855 1.4183184966499855
+  orientation -0.28954794177115967 0.4922436000699709 0.8208886816166 1.3167737113259437
+  position 0.33934852590003284 -0.9624590314870531 1.2330703916503718
 }
 TexturedBackground {
 }
@@ -28,8 +28,7 @@ RectangleArena {
   }
 }
 DEF BOX SolidBox {
-  translation 0.6308272900476724 0.0029764997780988354 0.32340115219727444
-  rotation 1.4659506888976545e-06 4.518419085233512e-05 0.99999999897812 0.0696144026530774
+  translation 0.320827 0.0029765 0.323401
   size 0.045 0.02 0.047
   appearance PBRAppearance {
     baseColor 1 0 0
@@ -49,12 +48,184 @@ DEF BOX SolidBox {
     }
   }
 }
-ConveyorBelt {
-  hidden translation_1 7.791200182707821e-11 8.960682141904532e-11 0.2249654210576356
-  hidden rotation_1 -0.0018841284888067747 0.9999982245011254 3.24720567923441e-05 2.0113046359068683e-06
-  size 1.5 0.1 0.3
-  borderHeight 0
-  speed 0
+Robot {
+  children [
+    MySharpGP2Y0A41SK0F {
+      translation 0.6 0.1 0.3299998897060873
+      rotation 0 0 -0.9999999999999999 1.5707953071795862
+      name "Distance Sensor"
+    }
+    Track {
+      translation 7.793993762925737e-11 8.960695192841768e-11 0.2249480936712961
+      rotation -0.0028981210872968703 0.9999958002208252 2.0853643525961494e-05 3.131731102108793e-06
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_base_color.jpg"
+              ]
+            }
+            roughnessMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_roughness.jpg"
+              ]
+            }
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_normal.jpg"
+              ]
+            }
+            occlusionMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_occlusion.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 6 0.4
+            }
+          }
+          geometry DEF BELT_BO Box {
+            size 1.5 0.1 0.15
+          }
+        }
+      ]
+      boundingObject USE BELT_BO
+      physics Physics {
+        density -1
+        mass 1
+      }
+      device [
+        LinearMotor {
+          name "belt_motor"
+          maxVelocity 0.2
+          sound ""
+        }
+      ]
+      textureAnimation 0.6666666666666666 0
+    }
+    Shape {
+      appearance PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_base_color.jpg"
+          ]
+        }
+        roughnessMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_roughness.jpg"
+          ]
+        }
+        metalnessMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_metalness.jpg"
+          ]
+        }
+        normalMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_normal.jpg"
+          ]
+        }
+        occlusionMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_occlusion.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 2 2
+        }
+      }
+      geometry IndexedFaceSet {
+        coord Coordinate {
+          point [
+            0.78 -0.08 0
+            0.78 -0.08 0.3
+            -0.78 -0.08 0.3
+            -0.78 -0.08 0
+            0.78 0.08 0
+            0.78 0.08 0.3
+            -0.78 0.08 0.3
+            -0.78 0.08 0
+            0.75 -0.05 0.3
+            0.75 0.05 0.3
+            -0.75 0.05 0.3
+            -0.75 -0.05 0.3
+            0.75 -0.05 0.3
+            0.75 0.05 0.3
+            -0.75 0.05 0.3
+            -0.75 -0.05 0.3
+          ]
+        }
+        texCoord TextureCoordinate {
+          point [
+            0 0
+            1 0
+            1 1
+            0 1
+            0 0.3846153846153846
+            1 0.3846153846153846
+            0 0.3846153846153846
+            0.10256410256410256 0.3846153846153846
+            0.10256410256410256 0
+            0 0
+            0.001 0
+            0.001 0.001
+            0 0.001
+          ]
+        }
+        coordIndex [
+          0, 1, 2, 3, -1, 4, 7, 6, 5, -1, 0, 4, 5, 1, -1, 7, 3, 2, 6, -1, 1, 5, 9, 8, -1, 5, 6, 10, 9, -1, 6, 2, 11, 10, -1, 2, 1, 8, 11, -1, 0, 3, 7, 4, -1
+        ]
+        texCoordIndex [
+          1, 5, 4, 0, -1, 0, 1, 5, 4, -1, 0, 8, 7, 6, -1, 0, 8, 7, 6, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1
+        ]
+      }
+    }
+  ]
+  name "conveyor belt"
+  boundingObject Group {
+    children [
+      Pose {
+        translation 0.765 0 0.15
+        children [
+          Box {
+            size 0.03 0.16 0.3
+          }
+        ]
+      }
+      Pose {
+        translation -0.765 0 0.15
+        children [
+          Box {
+            size 0.03 0.16 0.3
+          }
+        ]
+      }
+      Pose {
+        translation 0 -0.065 0.15
+        children [
+          Box {
+            size 1.5 0.03 0.3
+          }
+        ]
+      }
+      Pose {
+        translation 0 0.065 0.15
+        children [
+          Box {
+            size 1.5 0.03 0.3
+          }
+        ]
+      }
+    ]
+  }
+  controller "conveyor_belt_controller"
+  controllerArgs [
+    "0"
+    "0"
+  ]
+  window "<none>"
 }
 WoodenBox {
   translation 1.05 0 0.05
@@ -63,6 +234,7 @@ WoodenBox {
 }
 WoodenBox {
   translation 0.6 0.3 0.15
+  rotation 0 0 1 4.692820414042842e-06
   name "robot console"
   size 0.3 0.3 0.3
 }
