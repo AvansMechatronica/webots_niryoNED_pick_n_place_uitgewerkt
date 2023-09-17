@@ -190,7 +190,7 @@ class Timer:
 
 timer = Timer()
 
-kinematics_solver = KinematicsSolver(False)    
+kinematics_solver = KinematicsSolver(True)    
 
 niryo = NiryoRobot(niryoNED, 0.5)
 
@@ -199,7 +199,7 @@ niryo_pose_handler = Pose('NIRYO_NED')
 
 niryo_pose = niryo_pose_handler.get_position_quaternion()
 
-transform = Transform(niryo_pose)
+transform = Transform(niryo_pose, True)
 
 
 state = 'IDLE'
