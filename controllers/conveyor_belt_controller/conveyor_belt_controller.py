@@ -37,6 +37,7 @@ state = "IDLE"
 OBJECT_DISTANCE_TRESHOLD = 1.0
 
 RUNNING_SPEED = 0.1
+belt.setVelocity(0)
 # Main loop:
 # - perform simulation steps until Webots is stopping the controller
 while conveyor_belt.step(timestep) != -1:
@@ -45,11 +46,11 @@ while conveyor_belt.step(timestep) != -1:
 
     distance = ds.getValue()
     #print(distance)
-
     
     if state == "IDLE":
         belt.setVelocity(RUNNING_SPEED)
         state = "BELT_RUNNING"
+        pass
     elif state == "BELT_RUNNING":
         if distance > OBJECT_DISTANCE_TRESHOLD:
             belt.setVelocity(0)

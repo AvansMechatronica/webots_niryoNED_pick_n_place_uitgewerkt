@@ -224,6 +224,7 @@ def getBoxPosition():
     
     #rotation_euler = [roll,pitch,yaw]
     translation_rotation_euler = pr.euler_from_quaternion(translation_rotation,0,1,2, False)
+    print(translation_position)
     return True, translation_position, translation_rotation_euler
 
 states = [['isReady = niryo.setJoints(niryo.homePos)', 'isReady = niryo.setGripper(niryo.gripperClose)', 'isReady = niryo.isReady()'], # Got to Home position
