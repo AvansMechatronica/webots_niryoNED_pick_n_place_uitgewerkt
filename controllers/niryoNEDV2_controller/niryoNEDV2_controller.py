@@ -1,7 +1,7 @@
 """niryo_controller controller."""
 
 # You may need to import some classes of the controller module. Ex:
-#  from controller import niryoNED, Motor, DistanceSensor
+#  from controller import niryoNED_node, Motor, DistanceSensor
 from controller import Robot
 from controller import Supervisor
 import sys
@@ -27,39 +27,10 @@ from pytransform3d.transform_manager import TransformManager
 import numpy as np
 import matplotlib.pyplot
 
-supervisor_niryoNED = Supervisor()
-niryoNED = supervisor_niryoNED
+niryoNED_node = Supervisor()
 
 # get the time step of the cniryoNEDrent world.
-timeStep = int(4 * niryoNED.getBasicTimeStep())
-
-class Pose:
-    def __init__(self, Def):
-        self.Def = Def
-        self.node = supervisor_niryoNED.getFromDef(self.Def)
-        if self.node is None:
-            sys.stderr.write("No DEF %s node found in the world file\n" % Def)
-            sys.exit(1)
-        self.translation_field = self.node.getField("translation")
-        self.rotation_field = self.node.getField("rotation")
-
-    def get(self):
-        self.position = self.translation_field.getSFVec3f()
-        self.rotation = self.rotation_field.getSFRotation()
-        return self.position , self.rotation
-
-    def get_quaternion(self):
-        self.position = self.translation_field.getSFVec3f()
-        self.rotation = self.rotation_field.getSFRotation()
-        #print("rotation: %g %g %g %g" % (self.rotation[0], self.rotation[1], self.rotation[2],self.rotation[3]))
-        self.rotation_q  = pr.quaternion_from_axis_angle(self.rotation)
-        #print("q-rotation: %g %g %g %g" % (self.rotation_q[0], self.rotation_q[1], self.rotation_q[2],self.rotation_q[3]))
-        return self.position , self.rotation_q
-        
-    def get_position_quaternion(self):
-        return pt.transform_from_pq(np.hstack(self.get_quaternion()))
-        #return pt.transform_from_pq(np.hstack((niryo_translation, niryo_rotation_q)))
-
+timeStep = int(4 * niryoNED_node.getBasicTimeStep())
 
 class NiryoRobot:
     def __init__(self, robot_node, vel):
@@ -125,7 +96,32 @@ class NiryoRobot:
     def isReady(self):
         return not self.isBusy()
 
+class Pose:
+    def __init__(self, Def):
+        self.Def = Def
+        self.node = niryoNED_node.getFromDef(self.Def)
+        if self.node is None:
+            sys.stderr.write("No DEF %s node found in the world file\n" % Def)
+            sys.exit(1)
+        self.translation_field = self.node.getField("translation")
+        self.rotation_field = self.node.getField("rotation")
 
+    def get(self):
+        self.position = self.translation_field.getSFVec3f()
+        self.rotation = self.rotation_field.getSFRotation()
+        return self.position , self.rotation
+
+    def get_quaternion(self):
+        self.position = self.translation_field.getSFVec3f()
+        self.rotation = self.rotation_field.getSFRotation()
+        #print("rotation: %g %g %g %g" % (self.rotation[0], self.rotation[1], self.rotation[2],self.rotation[3]))
+        self.rotation_q  = pr.quaternion_from_axis_angle(self.rotation)
+        #print("q-rotation: %g %g %g %g" % (self.rotation_q[0], self.rotation_q[1], self.rotation_q[2],self.rotation_q[3]))
+        return self.position , self.rotation_q
+        
+    def get_position_quaternion(self):
+        return pt.transform_from_pq(np.hstack(self.get_quaternion()))
+        #return pt.transform_from_pq(np.hstack((niryo_translation, niryo_rotation_q)))
 
 class Transform:
     def __init__(self, fixed_pose, plot_poses = False):
@@ -143,14 +139,13 @@ class Transform:
         #delete last transform
         return pt.pq_from_transform(self.tr)[0:3], pt.pq_from_transform(self.tr)[3:7]
 
-plot_ik_solution = False
 
 class KinematicsSolver:
     def __init__(self, plot_ik_solution = False):
         self.plot_ik_solution = plot_ik_solution
         with tempfile.NamedTemporaryFile(suffix='.urdf', delete = False) as file:
             self.filename = file.name
-            file.write(niryoNED.getUrdf().encode('utf-8'))
+            file.write(niryoNED_node.getUrdf().encode('utf-8'))
         self.armChain = Chain.from_urdf_file(self.filename, active_links_mask = [False, True, True, True, True, True, True, False, False])
             
     def get(self, translation_position, rotation_euler, initial_joints, offset):
@@ -176,40 +171,34 @@ class KinematicsSolver:
         return True, self.ikResults[1:6]
 
 class Timer:
-    def __init__(self):
-        self.start_time = niryoNED.getTime()
+    def __init__(self, device):
+        self.device = device
+        self.start_time = self.device.getTime()
         self.time_out = 0
         pass
     def start(self, time_out):
         self.time_out  = time_out
-        self.start_time = niryoNED.getTime()
+        self.start_time = self.device.getTime()
         return True
     def isReady(self):
-        current_time = niryoNED.getTime()
+        current_time = self.device.getTime()
         return (current_time - self.start_time) > self.time_out
 
-timer = Timer()
+timer = Timer(niryoNED_node)
 
-kinematics_solver = KinematicsSolver(True)    
+kinematics_solver = KinematicsSolver(False)    
 
-niryo = NiryoRobot(niryoNED, 0.5)
+niryo = NiryoRobot(niryoNED_node, 0.5)
 
 box_pose_handler = Pose('BOX')
 niryo_pose_handler = Pose('NIRYO_NED')
 
 niryo_pose = niryo_pose_handler.get_position_quaternion()
 
-transform = Transform(niryo_pose, True)
+transform = Transform(niryo_pose, False)
 
 
-state = 'IDLE'
-state_start_time = niryoNED.getTime()
-
-def pauseSimulation():
-  supervisor_niryoNED.simulationSetMode(supervisor_niryoNED.SIMULATION_MODE_PAUSE)
-  supervisor_niryoNED.simulationResetPhysics()
-  print('Pause...')
-  return True
+state_start_time = niryoNED_node.getTime()
 
 dropPos = [math.pi/4, math.pi/4, -math.pi/4, 0.0, -math.pi/2, 0.0, 0.0, 0.0]
 
@@ -227,37 +216,59 @@ def getBoxPosition():
     print(translation_position)
     return True, translation_position, translation_rotation_euler
 
-states = [['isReady = niryo.setJoints(niryo.homePos)', 'isReady = niryo.setGripper(niryo.gripperClose)', 'isReady = niryo.isReady()'], # Got to Home position
-          ['isReady = timer.start(3)', 'isReady = timer.isReady()'],
-          ['isReady, translation_position, translation_rotation = getBoxPosition()'],
-          ['isReady, initial_joints = niryo.getJoints()', 'isReady, joint_values = kinematics_solver.get(translation_position, translation_rotation, initial_joints, niryo.pre_grasp_offset)'],                 # Calculate Pre-grasp position(joints) 
-          ['isReady = niryo.setJoints(joint_values)', 'isReady = niryo.isReady()'],
-          ['isReady = niryo.setGripper(niryo.gripperOpen)', 'isReady = niryo.isReady()'],
-          ['isReady, initial_joints = niryo.getJoints()', 'isReady, joint_values = kinematics_solver.get(translation_position, translation_rotation, initial_joints, niryo.grasp_offset)'],                 # Calculate Pre-grasp position(joints) 
-          ['isReady = niryo.setJoints(joint_values)', 'isReady = niryo.isReady()'],
-          ['isReady = niryo.setGripper(niryo.gripperClose)', 'isReady = niryo.isReady()'],
-          ['isReady, initial_joints = niryo.getJoints()', 'isReady, joint_values = kinematics_solver.get(translation_position, translation_rotation, initial_joints, niryo.post_grasp_offset)'],                 # Calculate Pre-grasp position(joints) 
-          ['isReady = niryo.setJoints(joint_values)', 'isReady = niryo.isReady()'],
-          ['isReady = niryo.setJoints(dropPos)', 'isReady = niryo.isReady()'],
-          ['isReady = niryo.setGripper(niryo.gripperOpen)', 'isReady = niryo.isReady()'],
-          ['isReady = pauseSimulation()']]
+# pick and drop state definition
+# Alle toestanden(states) kunnen meerder functies hebben b.v. Entry, Do, Exit functie. Deze worden in 1 regel als List gedefineerd
+# Elke Functie dient ten minste een isReady als result te hebben, welke aangeeft dat de volgende functei/toestand aan de beurt is
+pick_n_drop_states = [['isReady = niryo.setJoints(niryo.homePos)', 'isReady = niryo.setGripper(niryo.gripperClose)', 'isReady = niryo.isReady()'], # Goto to Home position
+          ['isReady = timer.start(3)', 'isReady = timer.isReady()'], # wacht 3 seconden
+          ['isReady, translation_position, translation_rotation = getBoxPosition()'], # Verkrijg de positie van de op te pakken doos
+          #['isReady, initial_joints = niryo.getJoints()', 'isReady, joint_values = kinematics_solver.get(translation_position, translation_rotation, initial_joints, niryo.pre_grasp_offset)'], # Bereken de jounts waardes voor de pre-grasp positie  
+          #['isReady = niryo.setJoints(joint_values)', 'isReady = niryo.isReady()'], # Verplaats de robot naar de pre-grasp positie
+          #['isReady = niryo.setGripper(niryo.gripperOpen)', 'isReady = niryo.isReady()'], # Open de gripper
+          ['isReady, initial_joints = niryo.getJoints()', 'isReady, joint_values = kinematics_solver.get(translation_position, translation_rotation, initial_joints, niryo.grasp_offset)'],# Bereken de jounts waardes voor de grasp positie 
+          #['isReady = niryo.setJoints(joint_values)', 'isReady = niryo.isReady()'],# Verplaats de robot naar de grasp positie
+          #['isReady = niryo.setGripper(niryo.gripperClose)', 'isReady = niryo.isReady()'], # Sluit de gripper
+          #['isReady, initial_joints = niryo.getJoints()', 'isReady, joint_values = kinematics_solver.get(translation_position, translation_rotation, initial_joints, niryo.post_grasp_offset)'],# Bereken de jounts waardes voor de post-grasp positie 
+          #['isReady = niryo.setJoints(joint_values)', 'isReady = niryo.isReady()'],# Verplaats de robot naar de post-grasp positie
+          #['isReady = niryo.setJoints(dropPos)', 'isReady = niryo.isReady()'], # Ga naar de drop positie
+          #['isReady = niryo.setGripper(niryo.gripperOpen)', 'isReady = niryo.isReady()'], # Open de gripper
+          ['isReady = timer.start(3)', 'isReady = timer.isReady()']] # Wacht 3 seconden
 
 
-for state in states:
-    for function in state:
-        isReady = False
-        while not isReady:
-            if niryoNED.step(timeStep) == -1:
+def execute_states_list(states):
+
+    lcls = locals()
+    for state in pick_n_drop_states:
+        for function in state:
+            isReady = False
+            while not isReady:
+                if niryoNED_node.step(timeStep) == -1:
+                    break
+                #print(function)
+                exec(function, globals(), lcls)
+                isReady = lcls["isReady"]
+                #print(isReady)
+            if niryoNED_node.step(timeStep) == -1:
                 break
-            #print(function)
-            exec(function)
-        if niryoNED.step(timeStep) == -1:
+        if niryoNED_node.step(timeStep) == -1:
             break
-                    
-    if niryoNED.step(timeStep) == -1:
+
+
+state = "IDLE"
+
+while niryoNED_node.step(timeStep) != -1:
+    #print(state)
+    if state == "IDLE":
+        state = "EXECUTE_STATES"
+    elif state == "EXECUTE_STATES":
+        execute_states_list(pick_n_drop_states)
+        state = "FINISH"
+    elif state == "FINISH":
+        niryoNED_node.simulationSetMode(niryoNED_node.SIMULATION_MODE_PAUSE)
+        niryoNED_node.simulationResetPhysics()
         break
+    else:
+        print("Undefined state")
 
-
-print("end")
-
+print("ready")
 # Enter here exit cleanup code.

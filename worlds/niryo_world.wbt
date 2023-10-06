@@ -12,8 +12,8 @@ EXTERNPROTO "../protos/MySharpGP2Y0A41SK0F.proto"
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.2527759431447706 0.4165828676005498 0.8732485539575627 1.0877109427728284
-  position -0.17065475461615334 -0.9642872835464027 1.3071301323281357
+  orientation -0.28334460627128855 0.28997169634388376 0.9141292301509776 1.5956852262729255
+  position 0.27921816873326677 -1.6634532055582347 1.496229403991001
 }
 TexturedBackground {
   texture "factory"
@@ -28,7 +28,7 @@ RectangleArena {
   }
 }
 DEF BOX SolidBox {
-  translation 0.18 0 0.309933
+  translation -0.28 0 0.309933
   size 0.035 0.02 0.047
   appearance PBRAppearance {
     baseColor 1 0 0
@@ -51,205 +51,24 @@ DEF BOX SolidBox {
     0 0 0
   ]
 }
-Robot {
-  children [
-    DEF DIST_SENSOR MySharpGP2Y0A41SK0F {
-      translation 0.5795566900811933 0.10001931478245396 0.3299802088786918
-      rotation -8.205591143508602e-08 9.024118907299704e-08 -0.9999999999999926 1.5707951502616395
-      name "Distance Sensor"
-    }
-    Track {
-      translation -1.7654447791868165e-06 1.3571899132356515e-07 0.22461247104378518
-      rotation -0.0036790294098112213 0.999972717588493 0.00640537440634901 1.6506300711186133e-05
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColorMap ImageTexture {
-              url [
-                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_base_color.jpg"
-              ]
-            }
-            roughnessMap ImageTexture {
-              url [
-                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_roughness.jpg"
-              ]
-            }
-            metalness 0
-            normalMap ImageTexture {
-              url [
-                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_normal.jpg"
-              ]
-            }
-            occlusionMap ImageTexture {
-              url [
-                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_occlusion.jpg"
-              ]
-            }
-            textureTransform TextureTransform {
-              scale 6 0.4
-              translation -0.4239999999999208 0
-            }
-          }
-          geometry DEF BELT_BO Box {
-            size 1.5 0.1 0.15
-          }
-        }
-      ]
-      boundingObject USE BELT_BO
-      physics Physics {
-        density -1
-        mass 1
-      }
-      device [
-        LinearMotor {
-          name "belt_motor"
-          maxVelocity 0.2
-          sound ""
-        }
-      ]
-      textureAnimation 0.6666666666666666 0
-    }
-    Shape {
-      appearance PBRAppearance {
-        baseColorMap ImageTexture {
-          url [
-            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_base_color.jpg"
-          ]
-        }
-        roughnessMap ImageTexture {
-          url [
-            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_roughness.jpg"
-          ]
-        }
-        metalnessMap ImageTexture {
-          url [
-            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_metalness.jpg"
-          ]
-        }
-        normalMap ImageTexture {
-          url [
-            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_normal.jpg"
-          ]
-        }
-        occlusionMap ImageTexture {
-          url [
-            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_occlusion.jpg"
-          ]
-        }
-        textureTransform TextureTransform {
-          scale 2 2
-        }
-      }
-      geometry IndexedFaceSet {
-        coord Coordinate {
-          point [
-            0.78 -0.08 0
-            0.78 -0.08 0.3
-            -0.78 -0.08 0.3
-            -0.78 -0.08 0
-            0.78 0.08 0
-            0.78 0.08 0.3
-            -0.78 0.08 0.3
-            -0.78 0.08 0
-            0.75 -0.05 0.3
-            0.75 0.05 0.3
-            -0.75 0.05 0.3
-            -0.75 -0.05 0.3
-            0.75 -0.05 0.3
-            0.75 0.05 0.3
-            -0.75 0.05 0.3
-            -0.75 -0.05 0.3
-          ]
-        }
-        texCoord TextureCoordinate {
-          point [
-            0 0
-            1 0
-            1 1
-            0 1
-            0 0.3846153846153846
-            1 0.3846153846153846
-            0 0.3846153846153846
-            0.10256410256410256 0.3846153846153846
-            0.10256410256410256 0
-            0 0
-            0.001 0
-            0.001 0.001
-            0 0.001
-          ]
-        }
-        coordIndex [
-          0, 1, 2, 3, -1, 4, 7, 6, 5, -1, 0, 4, 5, 1, -1, 7, 3, 2, 6, -1, 1, 5, 9, 8, -1, 5, 6, 10, 9, -1, 6, 2, 11, 10, -1, 2, 1, 8, 11, -1, 0, 3, 7, 4, -1
-        ]
-        texCoordIndex [
-          1, 5, 4, 0, -1, 0, 1, 5, 4, -1, 0, 8, 7, 6, -1, 0, 8, 7, 6, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1
-        ]
-      }
-    }
-  ]
-  name "conveyor belt"
-  boundingObject Group {
-    children [
-      Pose {
-        translation 0.765 0 0.15
-        children [
-          Box {
-            size 0.03 0.16 0.3
-          }
-        ]
-      }
-      Pose {
-        translation -0.765 0 0.15
-        children [
-          Box {
-            size 0.03 0.16 0.3
-          }
-        ]
-      }
-      Pose {
-        translation 0 -0.065 0.15
-        children [
-          Box {
-            size 1.5 0.03 0.3
-          }
-        ]
-      }
-      Pose {
-        translation 0 0.065 0.15
-        children [
-          Box {
-            size 1.5 0.03 0.3
-          }
-        ]
-      }
-    ]
-  }
-  controller "conveyor_belt_controller"
-  controllerArgs [
-    "0"
-    "0"
-  ]
-  supervisor TRUE
-  window "<none>"
-}
 WoodenBox {
-  translation 1.05 0 0.05
+  translation 0.64 0 0.05
   name "crate console"
   size 0.4 0.3 0.1
 }
 WoodenBox {
-  translation 0.6 0.3 0.15
+  translation 0.3 0.3 0.15
   rotation 0 0 1 4.692820414042842e-06
   name "robot console"
   size 0.3 0.3 0.3
 }
 PlasticCrate {
-  translation 1.05 0 0.1
+  translation 0.64 0 0.1
   size 0.4 0.3 0.2
   color 0 0 1
 }
 DEF NIRYO_NED Robot {
-  translation 0.6 0.3 0.3
+  translation 0.3 0.3 0.3
   rotation 0 0 1 3.14159
   children [
     DEF CAMERA Camera {
@@ -539,7 +358,7 @@ DEF NIRYO_NED Robot {
             ]
             endPoint Solid {
               translation 0 0 0.065
-              rotation 9.95964050819376e-16 -1 -7.853589927914994e-17 1.5699999999999965
+              rotation 1.231801834299247e-15 -1 -7.853589927915005e-17 1.5699999999999932
               children [
                 Pose {
                   rotation 0 0 -1 1.57
@@ -646,7 +465,7 @@ DEF NIRYO_NED Robot {
                         ]
                         endPoint Solid {
                           translation 0.032 0.042 0
-                          rotation -0.5775032287046064 -0.5775032287046074 -0.577044228522831 2.093474999999997
+                          rotation -0.5775032287046064 -0.5775032287046077 -0.5770442285228309 2.093474999999996
                           children [
                             Pose {
                               translation 0 0 0.0698
@@ -709,7 +528,7 @@ DEF NIRYO_NED Robot {
                               ]
                               endPoint Solid {
                                 translation 0 0 0.188
-                                rotation -0.0003979999369564118 -0.9999998415960377 0.00039799993695436 1.5707959999999948
+                                rotation -0.0003979999369579042 -0.9999998415960377 0.0003979999369535756 1.570795999999991
                                 children [
                                   Shape {
                                     appearance PBRAppearance {
@@ -762,7 +581,7 @@ DEF NIRYO_NED Robot {
                                     ]
                                     endPoint Solid {
                                       translation 0.0197 0.00925 0
-                                      rotation -8.749928075936489e-24 1 -5.1199579141479795e-24 1.5699999999999996
+                                      rotation -1.0055203060913332e-23 1 -4.681104378649581e-24 1.5699999999999996
                                       children [
                                         Shape {
                                           appearance USE GRAY_APPEARANCE
@@ -824,7 +643,7 @@ DEF NIRYO_NED Robot {
                                                 }
                                               ]
                                               endPoint Solid {
-                                                translation 0.01455 -0.0244 0.00961400000000001
+                                                translation 0.01455 -0.0244 0.009614000000000013
                                                 rotation 1 0 0 1.5708
                                                 children [
                                                   Shape {
@@ -876,7 +695,7 @@ DEF NIRYO_NED Robot {
                                                 }
                                               ]
                                               endPoint Solid {
-                                                translation 0.01455 -0.0244 -0.011066000000000001
+                                                translation 0.01455 -0.0244 -0.011065999999999998
                                                 rotation 1 0 0 1.5708
                                                 children [
                                                   Shape {
@@ -1426,4 +1245,183 @@ DEF NIRYO_NED Robot {
   }
   controller "niryoNEDV3_controller"
   supervisor TRUE
+}
+Robot {
+  children [
+    DEF DIST_SENSOR MySharpGP2Y0A41SK0F {
+      translation 0.29 0.12 0.33
+      rotation 0 0 1 -1.5707953071795862
+      name "Distance Sensor"
+    }
+    Track {
+      translation 0 0 0.22499999999999998
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_base_color.jpg"
+              ]
+            }
+            roughnessMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_roughness.jpg"
+              ]
+            }
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_normal.jpg"
+              ]
+            }
+            occlusionMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/rubber/dotted_rubber_occlusion.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 3.2 0.4
+            }
+          }
+          geometry DEF BELT_BO Box {
+            size 0.8 0.1 0.15
+          }
+        }
+      ]
+      boundingObject USE BELT_BO
+      physics Physics {
+        density -1
+        mass 1
+      }
+      device [
+        LinearMotor {
+          name "belt_motor"
+          maxVelocity 0.2
+          sound ""
+        }
+      ]
+      textureAnimation 1.25 0
+    }
+    Shape {
+      appearance PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_base_color.jpg"
+          ]
+        }
+        roughnessMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_roughness.jpg"
+          ]
+        }
+        metalnessMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_metalness.jpg"
+          ]
+        }
+        normalMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_normal.jpg"
+          ]
+        }
+        occlusionMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/corrugated_metal/corrugated_metal_occlusion.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 2 2
+        }
+      }
+      geometry IndexedFaceSet {
+        coord Coordinate {
+          point [
+            0.43000000000000005 -0.08 0
+            0.43000000000000005 -0.08 0.3
+            -0.43000000000000005 -0.08 0.3
+            -0.43000000000000005 -0.08 0
+            0.43000000000000005 0.08 0
+            0.43000000000000005 0.08 0.3
+            -0.43000000000000005 0.08 0.3
+            -0.43000000000000005 0.08 0
+            0.4 -0.05 0.3
+            0.4 0.05 0.3
+            -0.4 0.05 0.3
+            -0.4 -0.05 0.3
+            0.4 -0.05 0.3
+            0.4 0.05 0.3
+            -0.4 0.05 0.3
+            -0.4 -0.05 0.3
+          ]
+        }
+        texCoord TextureCoordinate {
+          point [
+            0 0
+            1 0
+            1 1
+            0 1
+            0 0.6976744186046511
+            1 0.6976744186046511
+            0 0.6976744186046511
+            0.18604651162790695 0.6976744186046511
+            0.18604651162790695 0
+            0 0
+            0.001 0
+            0.001 0.001
+            0 0.001
+          ]
+        }
+        coordIndex [
+          0, 1, 2, 3, -1, 4, 7, 6, 5, -1, 0, 4, 5, 1, -1, 7, 3, 2, 6, -1, 1, 5, 9, 8, -1, 5, 6, 10, 9, -1, 6, 2, 11, 10, -1, 2, 1, 8, 11, -1, 0, 3, 7, 4, -1
+        ]
+        texCoordIndex [
+          1, 5, 4, 0, -1, 0, 1, 5, 4, -1, 0, 8, 7, 6, -1, 0, 8, 7, 6, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1, 9, 10, 11, 12, -1
+        ]
+      }
+    }
+  ]
+  name "conveyor belt"
+  boundingObject Group {
+    children [
+      Pose {
+        translation 0.41500000000000004 0 0.15
+        children [
+          Box {
+            size 0.03 0.16 0.3
+          }
+        ]
+      }
+      Pose {
+        translation -0.41500000000000004 0 0.15
+        children [
+          Box {
+            size 0.03 0.16 0.3
+          }
+        ]
+      }
+      Pose {
+        translation 0 -0.065 0.15
+        children [
+          Box {
+            size 0.8 0.03 0.3
+          }
+        ]
+      }
+      Pose {
+        translation 0 0.065 0.15
+        children [
+          Box {
+            size 0.8 0.03 0.3
+          }
+        ]
+      }
+    ]
+  }
+  controller "conveyor_belt_controller"
+  controllerArgs [
+    "0"
+    "0"
+  ]
+  supervisor TRUE
+  window "<none>"
 }

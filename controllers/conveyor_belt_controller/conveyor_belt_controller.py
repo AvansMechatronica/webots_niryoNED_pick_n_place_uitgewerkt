@@ -15,7 +15,8 @@ distance_sensor_node = supervisor.getFromDef("DIST_SENSOR")
 trans_field = distance_sensor_node.getField("translation")
 distance_sensor_position = trans_field.getSFVec3f()
 # calculate new translation
-distance_sensor_position[0] = 0.50 + (random.random() * 0.2)
+distance_sensor_position[0] = 0.19 + (random.random() * 0.2)
+#distance_sensor_position[0] = 0.3
 trans_field.setSFVec3f(distance_sensor_position)
 distance_sensor_node.resetPhysics()
 
@@ -27,6 +28,7 @@ timestep = int(conveyor_belt.getBasicTimeStep())
 belt = conveyor_belt.getDevice('belt_motor')
 ds = conveyor_belt.getDevice('Distance Sensor')
 ds.enable(timestep)
+
 
 belt.setVelocity(0.1)
 belt.setPosition(float('inf'))
