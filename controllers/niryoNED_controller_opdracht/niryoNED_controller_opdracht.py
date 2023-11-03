@@ -252,17 +252,9 @@ def getObjectTranslationFromCamera():
 # Elke Functie dient ten minste een isReady als result te hebben, welke aangeeft dat de volgende functei/toestand aan de beurt is
 pick_n_drop_states = [['isReady = niryo.setJoints(niryo.homePos)', 'isReady = niryo.setGripper(niryo.gripperClose)', 'isReady = niryo.isReady()'], # Goto to Home position
           ['isReady = timer.start(3)', 'isReady = timer.isReady()'], # wacht 3 seconden
-          ['isReady, translation_position, translation_rotation = getObjectTranslationFromCamera()'], # Verkrijg de positie van de op te pakken doos
-          ['isReady, initial_joints = niryo.getJoints()', 'isReady, joint_values = kinematics_solver.get(translation_position, translation_rotation, initial_joints, niryo.pre_grasp_offset)'], # Bereken de jounts waardes voor de pre-grasp positie  
-          ['isReady = niryo.setJoints(joint_values)', 'isReady = niryo.isReady()'], # Verplaats de robot naar de pre-grasp positie
-          ['isReady = niryo.setGripper(niryo.gripperOpen)', 'isReady = niryo.isReady()'], # Open de gripper
-          ['isReady, initial_joints = niryo.getJoints()', 'isReady, joint_values = kinematics_solver.get(translation_position, translation_rotation, initial_joints, niryo.grasp_offset)'],# Bereken de jounts waardes voor de grasp positie 
-          ['isReady = niryo.setJoints(joint_values)', 'isReady = niryo.isReady()'],# Verplaats de robot naar de grasp positie
-          ['isReady = niryo.setGripper(niryo.gripperClose)', 'isReady = niryo.isReady()'], # Sluit de gripper
-          ['isReady, initial_joints = niryo.getJoints()', 'isReady, joint_values = kinematics_solver.get(translation_position, translation_rotation, initial_joints, niryo.post_grasp_offset)'],# Bereken de jounts waardes voor de post-grasp positie 
-          ['isReady = niryo.setJoints(joint_values)', 'isReady = niryo.isReady()'],# Verplaats de robot naar de post-grasp positie
-          ['isReady = niryo.setJoints(dropPos)', 'isReady = niryo.isReady()'], # Ga naar de drop positie
-          ['isReady = niryo.setGripper(niryo.gripperOpen)', 'isReady = niryo.isReady()'], # Open de gripper
+
+          # Plaats hier je eigen states
+
           ['isReady = timer.start(3)', 'isReady = timer.isReady()']] # Wacht 3 seconden
 
 
