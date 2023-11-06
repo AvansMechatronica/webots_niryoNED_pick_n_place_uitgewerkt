@@ -196,7 +196,7 @@ class Timer:
 
 timer = Timer(niryoNED_node)
 
-kinematics_solver = KinematicsSolver(False)    
+kinematics_solver = KinematicsSolver(True)    
 
 niryo = NiryoRobot(niryoNED_node, 0.5)
 
@@ -213,7 +213,7 @@ camera.enable(timeStep)
 camera.recognitionEnable(timeStep)
 
 camera_transform = camera_transform_handler.get_position_quaternion()
-transform = TransformCalculator(niryo_transform, camera_transform, False)
+transform = TransformCalculator(niryo_transform, camera_transform, True)
 
 
 state = 'IDLE'
@@ -253,6 +253,8 @@ def getObjectTranslationFromCamera():
 pick_n_drop_states = [['isReady = niryo.setJoints(niryo.homePos)', 'isReady = niryo.setGripper(niryo.gripperClose)', 'isReady = niryo.isReady()'], # Goto to Home position
           ['isReady = timer.start(3)', 'isReady = timer.isReady()'], # wacht 3 seconden
 
+          # Plaats hier je eigen states
+          ['isReady = niryo.setJoints(dropPos)', 'isReady = niryo.isReady()'], # Ga naar de drop positie
           # Plaats hier je eigen states
 
           ['isReady = timer.start(3)', 'isReady = timer.isReady()']] # Wacht 3 seconden
